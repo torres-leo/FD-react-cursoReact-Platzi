@@ -1,12 +1,12 @@
 import React from 'react';
-import '../styles/Login.scss';
+import '../styles/NewPassword.scss';
 
 import logo from '@logos/logo_yard_sale.svg';
 
-const Login = () => {
+const NewPassword = () => {
 	return (
-		<div className='login'>
-			<div className='form-container'>
+		<div className='NewPassword'>
+			<div className='NewPassword-container'>
 				<img src={logo} alt='logo' className='logo' />
 				<h1 className='title'>Create a new password</h1>
 				<p className='subtitle'>Enter a new passwrd for yue account</p>
@@ -36,4 +36,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default NewPassword;
