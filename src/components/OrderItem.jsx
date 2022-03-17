@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/OrderItem.scss';
+import '@styles/OrderItem.scss';
 
 import cerrar from '@icons/icon_close.png';
 

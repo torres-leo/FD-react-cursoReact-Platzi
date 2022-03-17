@@ -233,3 +233,113 @@ function ComponentWrapper(WrapperComponent) {
 
 Más adelante aprenderemos más sobre React Context y cómo usarlo.
 
+## useEffect 
+es una manera de que nuestro componente de React, puede recibir nueva info, re-renderizar o cambiar su contenido, cuando una función se haya completado. Es decir, podemos controlar el momento en el cual nuestro componente tome un cierto comportamiento. Por ejemplo, en situaciones como funciones asíncronas ⇒ setTimeout o asyn y await, fetch requests o manipulaciones del DOM. Veamos un ejemplo de como usar useEffect.
+
+**Pre-configuración**:
+> Instalar axios para realizar peticiones get, también instalar el plugin de babel para manejar el asincronismo
+
+```npm
+npm install axios
+npm install @babel/plugin-transform-runtime
+```
+
+Editemos rápidamente "*.babelrc*":
+```babel
+{
+	"presets": [
+		"@babel/preset-env",
+		"@babel/preset-react"
+	],
+	"plugins": [
+		"@babel/plugin-transform-runtime"
+	]
+}
+```
+
+Ahora si veamos como funciona.
+```jsx
+// ProductList.jsx
+import React, { useEffect, useState } from 'react';
+import ProductItem from '@components/ProductItem';
+import axios from 'axios';
+
+const API = 'https://api.escuelajs.co/api/v1/products';
+
+const ProductList = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(async () => {
+		const response = await axios(API);
+		setProducts(response.data);
+	}, [])
+
+	return (
+		<section className="main-container">
+			<div className="ProductList">
+				{products.map(product => (
+					<ProductItem />
+				))}
+			</div>
+		</section>
+	);
+}
+```
+En el inicio estamos importando axios para las peticiones, y creando una constante API que será la necesaria para traer información de los productos
+
+Analicemos el componente productList. Al inicio creamos la estructura inicial de estado, en la cual guardaremos los artículos que traeremos de nuestra API. Ahora, como indicamos, useEffect es muy útil para peticiones HTTP. Para ello, creamos la función anónima que usa useEffect. Por dentro creamos la función que usara async. Dentro creamos una constante llamada response a la cual creamos la petición y guadamos el resultado de la API. A continuación, usamos setProducts para poder guardar la información nueva en products, por eso por dentro le pasamos response.data. Lo más destacable viene ahora, en el momento que pasamos un segundo argumento a useEffect.
+
+### Maneras de usar useEffect
+- Array Vacío ⇒ ejecuta el callback solamente una vez, después de que el componente sea cargado en el DOM. Es decir, solamente cuando nuestro componente este cargado en el DOM, ejecutará la función por dentro SOLO UNA VEZ y nunca más
+
+```jsx
+const ProductList = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(async () => {
+		const response = await axios(API);
+		setProducts(response.data);
+	}, [])
+}
+```
+
+- Sin argumentos ⇒ cuando usemos useEffect, pero sin segundo argumento, este ejecutará dicho callback cada vez que se re-rendirece en el DOM. Es decir, cada vez que cambie cualquier valor del componente, este callback siempre se ejecuta
+```jsx
+const ProductList = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(async () => {
+		const response = await axios(API);
+		setProducts(response.data);
+	},)
+}
+```
+
+- Array con datos ⇒ este tipo se ejecuta solamente cuando un valor de prop o state de nuestro componente cambie. Es decir, imaginemos que existe un contador interno de clicks. Cada vez que el contador indique explicita mente que un valor del componente cambió, el callback de useEffect siempre se ejecutará.
+```jsx
+const ProductList = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(async () => {
+		const response = await axios(API);
+		setProducts(response.data);
+	}, [props, state])
+}
+```
+
+Tienen relación a la manera de anterior de componentes con clase
+
+- Usar la manera de array con datos o sin datos son equivalentes a componentDidUpdate o componentDidMount. Así como indica sus nombres.
+    - Si el componente se actualizó, este ejecuta un callback el cual tiene cierta función. Esta manera es igual a usar useEffect con un array con datos. Es decir, ¿hay nueva info? ⇒ realiza esto cada vez que la info nueva se actualice
+    - Si el componente se cargó en el DOM, un callback será ejecutado y nunca más. Esta manera es igual a usar useEffect con un array sin datos. Es decir, ¿ya está cargado? ⇒ necesito que hagas esto y después te puedes quedar dormido.
+
+## Características y diferencias entre useRef y useState
+
+**useRef** es un hook utilizado para obtener una referencia a los datos de un objeto con información mutable. Es decir, es como una manera de siempre poder obtener los datos mas recientes mediante referencia de algún objeto de html. En este caso referenciamos a los valores recientes de un formulario. Dos características importantes de useRef es que los datos son persistentes en caso de que se re-renderice el componente. Así como también, actualizar los datos de esta referencia no causan el re-render. Cabe recalcar la diferencia con useState, que la actualización de datos es síncrona, ya además como hemos mencionado, no se re-renderiza.
+
+### useRef
+
+1. Genera una referencia al elemento y podremos acceder a los valores por medio de ‘current’, y por este medio obtener lo que estamos typeando según sea el caso y poderlo transmitir a donde lo necesitemos.
+2. El elemento que tendrá la referencia debe tener atributo: ref={NOMBRE_USEREF}
+3. Podemos acceder a toda la data de la siguiente manera: new FormData(NOMBRE_USEREF.current);
+4. El elemento también debe tener un atributo: name=“NOMBRE” y podremos acceder a la data que trae en current de la siguiente manera: formData.get(‘NOMBRE’);
