@@ -2,7 +2,7 @@
 
 .MyOrder {
 	width: 360px;
-	padding: 24px;
+	padding: 24px 0px 24px 24px;
 	box-sizing: border-box;
 	position: absolute;
 	right: 0;
@@ -11,10 +11,34 @@
 	// bottom: 0;
 	border-radius: 6px;
 	border: 3px solid var(--very-light-pink);
+	position: fixed;
+	animation: 2s ease;
 }
+
+.my-order-content {
+	overflow-y: scroll;
+	height: auto;
+	max-height: 550px;
+	margin-right: 0;
+}
+
+@keyframes swipeLeft {
+	100% {
+		transform: translateX(-360px);
+	}
+}
+
 .title-container {
 	display: flex;
+	// justify-content: center;
+	align-items: center;
+	margin-bottom: 15px;
 }
+
+.title-container .title {
+	margin: 0;
+}
+
 .title-container img {
 	transform: rotate(180deg);
 	margin-right: 14px;
@@ -30,9 +54,15 @@
 	align-items: center;
 	background-color: var(--text-input-field);
 	margin-bottom: 24px;
+	margin-right: 14px;
 	border-radius: 8px;
 	padding: 0 24px;
 }
+
+.OrderItem {
+	margin-right: 14px;
+}
+
 .order p:nth-child(1) {
 	display: flex;
 	flex-direction: column;
@@ -51,7 +81,7 @@
 	border-radius: 8px;
 	border: none;
 	color: var(--white);
-	width: 100%;
+	width: 95%;
 	cursor: pointer;
 	font-size: var(--md);
 	font-weight: bold;
