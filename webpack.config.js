@@ -6,8 +6,9 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'FD-react-cursoReact-Platzi/bundle.js',
-		publicPath: '/FD-react-cursoReact-Platzi/',
+		filename: 'bundle.js',
+		clean: true,
+		publicPath: '/',
 	},
 	mode: 'development',
 	resolve: {
@@ -59,6 +60,9 @@ module.exports = {
 			filename: '[name].css',
 		}),
 	],
+	optimization: {
+		minimize: true,
+	},
 	devServer: {
 		historyApiFallback: true,
 		static: path.join(__dirname, 'dist'),
